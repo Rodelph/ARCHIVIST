@@ -2,7 +2,7 @@
 
 
 a = Analysis(
-    ['PdfGenerator\\PDFEngineIO.py'],
+    ['PdfGenerator\\PDFEngineGit.py'],
     pathex=[],
     binaries=[],
     datas=[],
@@ -22,7 +22,7 @@ exe = EXE(
     a.binaries,
     a.datas,
     [],
-    name='PDFEngineIO',
+    name='PDFEngineGit',
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,

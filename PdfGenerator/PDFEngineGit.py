@@ -24,8 +24,8 @@ OPT = {
     'margin-right': '1in',
     'page-size' : 'Letter'
 }
-TEMP_PDF_PATH = "./OutputData/temp.pdf"
-FINAL_PDF_PATH = "./OutputData/output.pdf"
+TEMP_PDF_PATH = "./PDF/temp.pdf"
+FINAL_PDF_PATH = "./PDF/output.pdf"
 UID = str(uuid.uuid4())
 
 def count_pdf_pages(temp_pdf_path):
