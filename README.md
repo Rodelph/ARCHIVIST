@@ -1,5 +1,17 @@
 # ARchivist
 
+[![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+[![Build Status](https://img.shields.io/badge/build-passing-brightgreen.svg)](#)
+
+## Compatibility
+
+This project is compatible with the following operating systems:
+
+- **Windows**
+- **Linux**
+- **macOS**
+
+
 ## Overview
 
 The assets I've created for this project are stored in the "Assets/CustomAssets", and are as follows:
