@@ -1,1 +1,2 @@
 PdfGenerator/dist/* filter=lfs diff=lfs merge=lfs -text
+PdfGenerator/wkhtmltopdf/* filter=lfs diff=lfs merge=lfs -text

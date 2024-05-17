@@ -21,10 +21,11 @@ OPT = {
     'margin-top': '2in',
     'margin-bottom': '1in',
     'margin-left': '1in',
-    'margin-right': '1in'
+    'margin-right': '1in',
+    'page-size' : 'Letter'
 }
-TEMP_PDF_PATH = "./CacheData/temp.pdf"
-FINAL_PDF_PATH = "./CacheData/output.pdf"
+TEMP_PDF_PATH = "./OutputData/temp.pdf"
+FINAL_PDF_PATH = "./OutputData/output.pdf"
 UID = str(uuid.uuid4())
 
 def count_pdf_pages(temp_pdf_path):
@@ -43,8 +44,7 @@ def get_ar_marker_coordinates(pdf_path):
     return ar_marker_coordinates
 
 def making_pdf_qr(path):
-    path_to_file = path
-    pdfkit.from_url(path_to_file, output_path=TEMP_PDF_PATH, configuration=CONFIG, options=OPT, verbose=True)
+    pdfkit.from_url(path, output_path=TEMP_PDF_PATH, configuration=CONFIG, options=OPT, verbose=False)
 
     NUM_PAGES = count_pdf_pages(TEMP_PDF_PATH)
 
@@ -163,9 +163,6 @@ def making_pdf_qr(path):
         # Create the final dictionary
         json_data['pages'].append({"hyperlinks": hyperlinks})
 
-    # Print the result
-    print(json_data)
-
     doc.close()
     shutil.rmtree(folder_path)
 
@@ -213,6 +210,11 @@ def process_pdf_file(file_path):
         file_name = os.path.join(uid_folder_path, str(p_no) + ext)
         img.save(file_name)
 
+    a = 200
+    b = 660
+    wid = 120
+    hei = 120
+    
     for i in range(NUM_PAGES):
         page = pdf_reader.pages[i]
         qr_filename = "{}.png".format(i)
@@ -229,8 +231,9 @@ def process_pdf_file(file_path):
 
         image_pdf_path = 'image_page.pdf'
         c = canvas.Canvas(image_pdf_path, pagesize=letter)
-        c.drawImage("data:image/png;base64," + marker_base64, 205, 710, width=80, height=80)
-        c.drawImage("data:image/png;base64," + qr_base64, 295, 700, width=100, height=100)
+        c.drawImage("data:image/png;base64," + marker_base64, a, b, width=wid, height=hei)
+        # Draw the QR code
+        c.drawImage("data:image/png;base64," + qr_base64, a + wid + 5, b, width=wid, height=hei)
         c.save()
 
         with open(image_pdf_path, 'rb') as image_pdf_file:

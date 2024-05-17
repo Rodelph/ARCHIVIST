@@ -12,7 +12,7 @@
 
 /PdfGenerator/__pycache__/
 /PdfGenerator/build/
-/PdfGenerator/wkhtmltopdf
+/PdfGenerator/dist/
 /PdfGenerator/access.txt
 /PdfGenerator/*.spec
 /PdfGenerator/*.zip
