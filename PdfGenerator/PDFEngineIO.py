@@ -13,7 +13,13 @@ from reportlab.pdfgen import canvas
 from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QLineEdit, 
                              QPushButton, QLabel, QMessageBox, QFileDialog)
 
-PATH_TO_WKHTMLTOPDF = r'./wkhtmltopdf/bin/wkhtmltopdf.exe'
+if sys.platform == "win32":
+    PATH_TO_WKHTMLTOPDF = r'./wkhtmltopdf/bin/wkhtmltopdf.exe'
+elif sys.platform == "linux" or "linux2":
+    PATH_TO_WKHTMLTOPDF = r'./wkhtmltopdf/wkhtmltopdf'
+elif sys.platform == "darwin" or "os2" or "os2emx":
+    print("mcos")
+
 CONFIG = pdfkit.configuration(wkhtmltopdf=PATH_TO_WKHTMLTOPDF)
 OPT = {
     'margin-top': '2in',
@@ -47,6 +53,10 @@ def making_pdf_qr(path):
     folder_path = "./QR"
     if not os.path.exists(folder_path):
         os.makedirs(folder_path)
+
+    output_path = "./PDF"
+    if not os.path.exists(output_path):
+        os.makedirs(output_path)
         
     uid_folder_path = os.path.join(folder_path, UID)
     if not os.path.exists(uid_folder_path):
