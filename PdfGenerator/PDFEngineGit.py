@@ -309,16 +309,16 @@ class PDFGeneratorApp(QWidget):
     def browse_pdf(self):
         options = QFileDialog.Options()
         options |= QFileDialog.ReadOnly
-        file_path, _ = QFileDialog.getOpenFileName(self, "Open PDF File", "", "PDF Files (*.pdf);;All Files (*)", options=options)
+        file_path, _ = QFileDialog.getOpenFileName(self, "Open HTML File", "", "HTML Files (*.html);;All Files (*)", options=options)
         if file_path:
-            self.status_label.setText('Processing PDF...')
+            self.status_label.setText('Processing File...')
             try:
                 process_pdf_file(file_path)
-                self.status_label.setText('PDF processed successfully!')
-                QMessageBox.information(self, 'Success', 'PDF processed successfully!', QMessageBox.Ok)
+                self.status_label.setText('File processed successfully!')
+                QMessageBox.information(self, 'Success', 'File processed successfully!', QMessageBox.Ok)
             except Exception as e:
-                self.status_label.setText('Error processing PDF.')
-                QMessageBox.critical(self, 'Error', f'Error processing PDF: {e}', QMessageBox.Ok)
+                self.status_label.setText('Error processing the file.')
+                QMessageBox.critical(self, 'Error', f'Error processing the file: {e}', QMessageBox.Ok)
 
     def generate_pdf_from_url(self):
         url = self.url_input.text()
