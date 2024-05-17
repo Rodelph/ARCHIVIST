@@ -20,7 +20,7 @@ if sys.platform == "win32":
 elif sys.platform == "linux" or "linux2":
     PATH_TO_WKHTMLTOPDF = r'./wkhtmltopdf/wkhtmltopdf'
 elif sys.platform == "darwin" or "os2" or "os2emx":
-    print("mcos")
+    PATH_TO_WKHTMLTOPDF = r'./wkhtmltopdf/wkhtmltopdf-mcos'
 
 CONFIG = pdfkit.configuration(wkhtmltopdf=PATH_TO_WKHTMLTOPDF)
 OPT = {
