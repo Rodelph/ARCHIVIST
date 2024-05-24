@@ -4,7 +4,7 @@ URL = 'https://api.jsonbin.io/v3/b'
 
 HEADERS = {
   'Content-Type': 'application/json',
-  'X-Master-Key': '$2a$10$Z6B/b820H97jIfVer0qXVem.TJ5c69MZdAppCDKQ/1C6KwBtYYX/2'
+  'X-Access-Key': '$2a$10$/rAImv8LT5TYb0BGu6ur4eTcRlOCW1WgGk6PqM7SeVfnCW.lLG1qO'
 }
 
 def print_status(func):
