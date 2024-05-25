@@ -40,15 +40,19 @@ python PDFEngineIO.py
     ```
     pyinstaller --onefile PDFEngineGit.py
     ```
-    More info can be found in this [link](https://www.datacamp.com/tutorial/two-simple-methods-to-convert-a-python-file-to-an-exe-file).
-
+More info can be found in this [link](https://www.datacamp.com/tutorial/two-simple-methods-to-convert-a-python-file-to-an-exe-file).
+**Make sure to add _ARMarker and wkhtmltopdf folders to the directory of the executable file.**
 
 # Run from release
 
-- If you want to run the windows version project please download the executable file from [here](https://github.com/seanscofield/archivist/releases/tag/Windows_JSON).
+- If you want to run the windows version project please download the executable file from [here](https://github.com/Rodelph/ARCHIVIST/releases/tag/windows).
 
-![alt text](readme-img/image-json.png)
+![alt text](readme-img/windows-release.png)
 
 - If you want to run the linux version project please download the executable file from [here](https://github.com/Rodelph/ARCHIVIST/releases/tag/linux).
 
 ![alt text](readme-img/linux-release.png)
+
+- If you want to run the macOS version project please download the executable file from [here](https://github.com/Rodelph/ARCHIVIST/releases/tag/macOS).
+
+![alt text](readme-img/macos-release.png)
