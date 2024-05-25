@@ -12,6 +12,8 @@ The code in this repo is separate into 2 sub-parts, each containing their own re
 - **ARchivist document generator**: Python code to be run on a computer in order to generate augmented documents
 - **ARchivist mobile application**: Unity project containing the code for an Android/iPhone mobile application that can be used to read and interact with these augmented documents.
 
+In addition, a pre-built Android APK of the mobile application has been included for ease of testing this prototype. Note, however, that the AR tracking performance is noticeably better on iPhone. For both Android and iPhone, the Unity project can be opened and used to package the application into an Android or iPhone app (the latter requiring MacOS).
+
 ## Compatibility
 
 This project is meant to be compatible with the following operating systems (although macOS is required for building an iPhone app from the mobile application):
