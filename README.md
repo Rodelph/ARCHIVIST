@@ -1,3 +1,4 @@
+
 # ARchivist
 
 <h2> This project was made by :  </h2>
@@ -37,6 +38,15 @@ The code in this repo is separate into 2 sub-parts, each containing their own re
 - **ARchivist mobile application**: Unity project containing the code for an Android/iPhone mobile application that can be used to read and interact with these augmented documents.
 
 In addition, a pre-built Android APK of the mobile application has been included for ease of testing this prototype. Note, however, that the AR tracking performance is noticeably better on iPhone. For both Android and iPhone, the Unity project can be opened and used to package the application into an Android or iPhone app (the latter requiring MacOS).
+
+## Storage Solution
+
+We are currently using JsonBin.io for storing the data that the QR codes in our augmented documents link to. We ultimately cut some corners in order to get a workable solution with minimal effort, that way we could focus on more important aspects of this project. We go into more detail in our final report, but some of the negative aspects of this current approach are that it is centralized and we also didn't address security of access.
+
+We created a JsonBin.io account solely for use with this project, and have provided "read" and "write" access keys in plaintext to our mobile application code and document generation code, respectively. Furthermore, we list the username and password of that account here for ease of visibility into the stored files themselves as well as troubleshooting:
+
+JsonBin.io user: nguiproject16@gmail.com
+JsonBin.io pwd: tHEmEMERgANG1997
 
 ## Compatibility
 
