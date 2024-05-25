@@ -44,10 +44,11 @@ python PDFEngineIO.py
 
 
 # Run from release
-- If you want to try the GITHUB version as database please download the executable file from [here](https://github.com/seanscofield/archivist/releases/tag/Windows_Git).
 
-![alt text](readme-img/image-1-git.png)
-
-- If you want to try the JSONIO version as database please download the executable file from [here](https://github.com/seanscofield/archivist/releases/tag/Windows_JSON).
+- If you want to run the windows version project please download the executable file from [here](https://github.com/seanscofield/archivist/releases/tag/Windows_JSON).
 
 ![alt text](readme-img/image-json.png)
+
+- If you want to run the linux version project please download the executable file from [here](https://github.com/Rodelph/ARCHIVIST/releases/tag/linux).
+
+![alt text](readme-img/linux-release.png)
