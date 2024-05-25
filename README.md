@@ -43,7 +43,7 @@ In addition, a pre-built Android APK of the mobile application has been included
 
 We are currently using JsonBin.io for storing the data that the QR codes in our augmented documents link to. We ultimately cut some corners in order to get a workable solution with minimal effort, that way we could focus on more important aspects of this project. We go into more detail in our final report, but some of the negative aspects of this current approach are that it is centralized and we also didn't address security of access.
 
-We created a JsonBin.io account solely for use with this project, and have provided "read" and "write" access keys in plaintext to our mobile application code and document generation code, respectively. Furthermore, we list the username and password of that account here for ease of visibility into the stored files themselves as well as troubleshooting:
+We created a JsonBin.io account solely for use with this project, and have provided "read" and "write" access keys in plaintext to our mobile application code and document generation code, respectively. Furthermore, we list the username and password of that account here for ease of visibility into the stored files themselves as well as troubleshooting (this is normally a VERY BAD security flaw that should not be done):
 
 JsonBin.io user: nguiproject16@gmail.com
 
