@@ -46,6 +46,7 @@ We are currently using JsonBin.io for storing the data that the QR codes in our 
 We created a JsonBin.io account solely for use with this project, and have provided "read" and "write" access keys in plaintext to our mobile application code and document generation code, respectively. Furthermore, we list the username and password of that account here for ease of visibility into the stored files themselves as well as troubleshooting:
 
 JsonBin.io user: nguiproject16@gmail.com
+
 JsonBin.io pwd: tHEmEMERgANG1997
 
 ## Compatibility
