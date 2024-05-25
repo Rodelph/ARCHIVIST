@@ -3,7 +3,6 @@ import sys
 import pdfkit
 import base64
 import qrcode
-import uuid
 import fitz  # PyMuPDF
 import webbrowser
 from jsonio import update_data, create_data
@@ -30,9 +29,9 @@ OPT = {
 }
 TEMP_PDF_PATH = "./PDF/temp.pdf"
 FINAL_PDF_PATH = "./PDF/output.pdf"
-UID = str(uuid.uuid4())
+BIN_ID = create_data()
 QR_FOLDER_PATH = "./QR"
-UID_FOLDER_PATH = os.path.join(QR_FOLDER_PATH, UID)
+UID_FOLDER_PATH = os.path.join(QR_FOLDER_PATH, BIN_ID)
 OUTPUT_FOLDER_PATH = "./PDF"
 AR_MARKER_PATH = './_ARMarker/Markers/MarkerIcons03.png'
 
@@ -54,7 +53,7 @@ def get_ar_marker_coordinates(pdf_path):
 
 def generate_qr_codes(num_pages):
     for p_no in range(num_pages):
-        text = f'{{"id": "{UID}", "page": {p_no + 1}}}'
+        text = f'{{"id": "{BIN_ID}", "page": {p_no + 1}}}'
         qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=4)
         qr.add_data(text)
         qr.make(fit=True)
@@ -111,29 +110,29 @@ def process_pdf_metadata(pdf_path, url):
     
     total_pages = doc.page_count
     item_count = 0
-    bin_id = create_data()
-hyperlink_id = UID
-for page_idx in range(total_pages):
-    cur_page = doc.load_page(page_idx)
-    links = cur_page.get_links()
-    hyperlinks = []
+    
+    hyperlink_id = BIN_ID
+    for page_idx in range(total_pages):
+        cur_page = doc.load_page(page_idx)
+        links = cur_page.get_links()
+        hyperlinks = []
 
-    for item in links:
-        x0, y0, x1, y1 = item['from']
-        coordinates = [round(coord, 5) for coord in [x0, y0, x1, y1]]
-        uri = item.get('uri', '')
-        hyperlink = {'id': f"{hyperlink_id}-{item_count}", 'uri': uri, 'coordinates': coordinates}
-        hyperlinks.append(hyperlink)
-        item_count += 1
+        for item in links:
+            x0, y0, x1, y1 = item['from']
+            coordinates = [round(coord, 5) for coord in [x0, y0, x1, y1]]
+            uri = item.get('uri', '')
+            hyperlink = {'id': f"{hyperlink_id}-{item_count}", 'uri': uri, 'coordinates': coordinates}
+            hyperlinks.append(hyperlink)
+            item_count += 1
 
-    json_data['pages'].append({"hyperlinks": hyperlinks})
+        json_data['pages'].append({"hyperlinks": hyperlinks})
 
-update_data(bin_id=hyperlink_id, json_data=json_data)
-doc.close()
+    update_data(bin_id=BIN_ID, json_data=json_data)
+    doc.close()
 
 def making_pdf_qr(path):
-pdfkit.from_url(path, output_path=TEMP_PDF_PATH, configuration=CONFIG, options=OPT, verbose=False)
-num_pages = count_pdf_pages(TEMP_PDF_PATH)
+    pdfkit.from_url(path, output_path=TEMP_PDF_PATH, configuration=CONFIG, options=OPT, verbose=False)
+    num_pages = count_pdf_pages(TEMP_PDF_PATH)
     generate_qr_codes(num_pages)
     add_qr_codes_to_pdf(num_pages, TEMP_PDF_PATH, FINAL_PDF_PATH)
     os.remove(TEMP_PDF_PATH)
