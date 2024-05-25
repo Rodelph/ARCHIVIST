@@ -15,6 +15,7 @@ from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QLineEdit,
 from github import Github
 import json
 
+# Check which platform the program is being executed on
 if sys.platform == "win32":
     PATH_TO_WKHTMLTOPDF = r'./wkhtmltopdf/bin/wkhtmltopdf.exe'
 elif sys.platform in ["linux", "linux2"]:
@@ -22,7 +23,13 @@ elif sys.platform in ["linux", "linux2"]:
 elif sys.platform in ["darwin", "os2", "os2emx"]:
     PATH_TO_WKHTMLTOPDF = r'./wkhtmltopdf/wkhtmltopdf-mcos'
 
+# Coordinates for where to place the qr code
+AP, BP, WID, HEI = 200, 660, 120, 120
+
+# Config setup that looks for the wktml executables within the project
 CONFIG = pdfkit.configuration(wkhtmltopdf=PATH_TO_WKHTMLTOPDF)
+
+# Parameter initialization for files and directories
 OPT = {
     'margin-top': '2in',
     'margin-bottom': '1in',
@@ -32,13 +39,17 @@ OPT = {
 }
 TEMP_PDF_PATH = "./PDF/temp.pdf"
 FINAL_PDF_PATH = "./PDF/output.pdf"
+
+# Creating a unique id for the json data
 UID = str(uuid.uuid4())
 
+# Returns the number of pages in a PDF file.
 def count_pdf_pages(temp_pdf_path):
     with open(temp_pdf_path, 'rb') as file:
         pdf_reader = PdfReader(file)
         return len(pdf_reader.pages)
 
+# Generates QR codes for each page in the PDF.
 def generate_qr_codes(num_pages, uid_folder_path):
     for p_no in range(num_pages):
         text = f'{{"id": "{UID}", "page": {p_no}}}'
@@ -48,12 +59,11 @@ def generate_qr_codes(num_pages, uid_folder_path):
         img = qr.make_image(fill='black', back_color='white')
         img.save(os.path.join(uid_folder_path, f"{p_no}.png"))
 
+# Embeds QR codes and AR markers into each page of the PDF.
 def add_qr_codes_to_pdf(num_pages, temp_pdf_path, final_pdf_path, uid_folder_path):
     pdf_reader = PdfReader(temp_pdf_path)
     pdf_writer = PdfWriter()
 
-    a, b = 200, 660
-    wid, hei = 120, 120
     ar_marker_path = './_ARMarker/Markers/MarkerIcons03.png'
 
     with open(ar_marker_path, 'rb') as marker_file:
@@ -70,8 +80,8 @@ def add_qr_codes_to_pdf(num_pages, temp_pdf_path, final_pdf_path, uid_folder_pat
 
         image_pdf_path = 'image_page.pdf'
         c = canvas.Canvas(image_pdf_path, pagesize=letter)
-        c.drawImage(f"data:image/png;base64,{marker_base64}", a, b, width=wid, height=hei)
-        c.drawImage(f"data:image/png;base64,{qr_base64}", a + wid + 5, b, width=wid, height=hei)
+        c.drawImage(f"data:image/png;base64,{marker_base64}", AP, BP, width=WID, height=HEI)
+        c.drawImage(f"data:image/png;base64,{qr_base64}", AP + WID + 5, BP, width=WID, height=HEI)
         c.save()
 
         with open(image_pdf_path, 'rb') as image_pdf_file:
@@ -85,13 +95,12 @@ def add_qr_codes_to_pdf(num_pages, temp_pdf_path, final_pdf_path, uid_folder_pat
     with open(final_pdf_path, 'wb') as output_pdf:
         pdf_writer.write(output_pdf)
 
+# Extracts hyperlinks from the PDF and updates the JSON bin with metadata.
 def process_pdf_metadata(pdf_path, url):
     doc = fitz.open(pdf_path)
-    a, b = 200, 660
-    wid, hei = 120, 120
     json_data = {
         'URL': url,
-        'ar_marker_coordinates': [a, (792 - (b + hei)), (a + wid), (792 - b)],
+        'ar_marker_coordinates': [AP, (792 - (BP + HEI)), (AP + WID), (792 - BP)],
         'pages': []
     }
     
@@ -115,7 +124,7 @@ def process_pdf_metadata(pdf_path, url):
 
     doc.close()
 
-    with open('github_access_key.txt', 'r') as file:
+    with open('access.txt', 'r') as file:
         access_token = file.read().strip()
     github = Github(access_token)
     repo = github.get_repo('seanscofield/archivist')
@@ -123,6 +132,7 @@ def process_pdf_metadata(pdf_path, url):
     file_path = f'Assets/CustomAssets/{UID}.json'
     repo.create_file(file_path, "Added entry", file_content)
 
+# Converts a URL to a PDF, generates QR codes, embeds them, processes metadata, and opens the final PDF.
 def making_pdf_qr(path):
     pdfkit.from_url(path, output_path=TEMP_PDF_PATH, configuration=CONFIG, options=OPT, verbose=False)
     num_pages = count_pdf_pages(TEMP_PDF_PATH)
@@ -137,6 +147,7 @@ def making_pdf_qr(path):
     process_pdf_metadata(FINAL_PDF_PATH, path)
     webbrowser.open(FINAL_PDF_PATH)
 
+# Converts a existing HTMLin a local diractory to a PDF, generates QR codes, embeds them, processes metadata, and opens the final PDF.
 def process_pdf_file(file_path):
     num_pages = count_pdf_pages(file_path)
     uid_folder_path = os.path.join("./QR", UID)
@@ -149,6 +160,7 @@ def process_pdf_file(file_path):
     process_pdf_metadata(FINAL_PDF_PATH, file_path)
     webbrowser.open(FINAL_PDF_PATH)
 
+# GUI Application
 class PDFGeneratorApp(QWidget):
     def __init__(self):
         super().__init__()

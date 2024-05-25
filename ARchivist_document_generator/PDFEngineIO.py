@@ -1,4 +1,4 @@
-import os
+import os, shutil
 import sys
 import pdfkit
 import base64
@@ -12,6 +12,7 @@ from reportlab.pdfgen import canvas
 from PyQt5.QtWidgets import (QApplication, QWidget, QVBoxLayout, QLineEdit, 
                              QPushButton, QLabel, QMessageBox, QFileDialog)
 
+# Check which platform the program is being executed on
 if sys.platform == "win32":
     PATH_TO_WKHTMLTOPDF = r'./wkhtmltopdf/bin/wkhtmltopdf.exe'
 elif sys.platform in ["linux", "linux2"]:
@@ -19,7 +20,13 @@ elif sys.platform in ["linux", "linux2"]:
 elif sys.platform in ["darwin", "os2", "os2emx"]:
     PATH_TO_WKHTMLTOPDF = r'./wkhtmltopdf/wkhtmltopdf-mcos'
 
+# Config setup that looks for the wktml executables within the project
 CONFIG = pdfkit.configuration(wkhtmltopdf=PATH_TO_WKHTMLTOPDF)
+
+# Creating a new bin to hold the json on the JSONBIN Database
+BIN_ID = create_data()
+
+# Parameter initialization for files and directories
 OPT = {
     'margin-top': '2in',
     'margin-bottom': '1in',
@@ -29,21 +36,25 @@ OPT = {
 }
 TEMP_PDF_PATH = "./PDF/temp.pdf"
 FINAL_PDF_PATH = "./PDF/output.pdf"
-BIN_ID = create_data()
 QR_FOLDER_PATH = "./QR"
 UID_FOLDER_PATH = os.path.join(QR_FOLDER_PATH, BIN_ID)
 OUTPUT_FOLDER_PATH = "./PDF"
 AR_MARKER_PATH = './_ARMarker/Markers/MarkerIcons03.png'
 
+# Coordinates for where to place the qr code
+AP, BP, WID, HEI = 200, 660, 120, 120
+
 # Ensure directories exist
 os.makedirs(UID_FOLDER_PATH, exist_ok=True)
 os.makedirs(OUTPUT_FOLDER_PATH, exist_ok=True)
 
+# Returns the number of pages in a PDF file.
 def count_pdf_pages(temp_pdf_path):
     with open(temp_pdf_path, 'rb') as file:
         pdf_reader = PdfReader(file)
         return len(pdf_reader.pages)
 
+# Generates QR codes for each page in the PDF.
 def generate_qr_codes(num_pages):
     for p_no in range(num_pages):
         text = f'{{"id": "{BIN_ID}", "page": {p_no}}}'
@@ -53,12 +64,10 @@ def generate_qr_codes(num_pages):
         img = qr.make_image(fill='black', back_color='white')
         img.save(os.path.join(UID_FOLDER_PATH, f"{p_no}.png"))
 
+# Embeds QR codes and AR markers into each page of the PDF.
 def add_qr_codes_to_pdf(num_pages, temp_pdf_path, final_pdf_path):
     pdf_reader = PdfReader(temp_pdf_path)
     pdf_writer = PdfWriter()
-
-    a, b = 200, 660
-    wid, hei = 120, 120
 
     with open(AR_MARKER_PATH, 'rb') as marker_file:
         marker_data = marker_file.read()
@@ -74,8 +83,8 @@ def add_qr_codes_to_pdf(num_pages, temp_pdf_path, final_pdf_path):
 
         image_pdf_path = 'image_page.pdf'
         c = canvas.Canvas(image_pdf_path, pagesize=letter)
-        c.drawImage(f"data:image/png;base64,{marker_base64}", a, b, width=wid, height=hei)
-        c.drawImage(f"data:image/png;base64,{qr_base64}", a + wid + 5, b, width=wid, height=hei)
+        c.drawImage(f"data:image/png;base64,{marker_base64}", AP, BP, width=WID, height=HEI)
+        c.drawImage(f"data:image/png;base64,{qr_base64}", AP + WID + 5, BP, width=WID, height=HEI)
         c.save()
 
         with open(image_pdf_path, 'rb') as image_pdf_file:
@@ -89,20 +98,18 @@ def add_qr_codes_to_pdf(num_pages, temp_pdf_path, final_pdf_path):
     with open(final_pdf_path, 'wb') as output_pdf:
         pdf_writer.write(output_pdf)
 
+# Extracts hyperlinks from the PDF and updates the JSON bin with metadata.
 def process_pdf_metadata(pdf_path, url):
     doc = fitz.open(pdf_path)
-    a, b = 200, 660
-    wid, hei = 120, 120
     json_data = {
         'URL': url,
-        'ar_marker_coordinates': [a, (792 - (b + hei)), (a + wid), (792 - b)],
+        'ar_marker_coordinates': [AP, (792 - (BP + HEI)), (AP + WID), (792 - BP)],
         'pages': []
     }
     
     total_pages = doc.page_count
     item_count = 0
     
-    hyperlink_id = BIN_ID
     for page_idx in range(total_pages):
         cur_page = doc.load_page(page_idx)
         links = cur_page.get_links()
@@ -112,7 +119,7 @@ def process_pdf_metadata(pdf_path, url):
             x0, y0, x1, y1 = item['from']
             coordinates = [round(coord, 5) for coord in [x0, y0, x1, y1]]
             uri = item.get('uri', '')
-            hyperlink = {'id': f"{hyperlink_id}-{item_count}", 'uri': uri, 'coordinates': coordinates}
+            hyperlink = {'id': f"{BIN_ID}-{item_count}", 'uri': uri, 'coordinates': coordinates}
             hyperlinks.append(hyperlink)
             item_count += 1
 
@@ -121,15 +128,18 @@ def process_pdf_metadata(pdf_path, url):
     update_data(bin_id=BIN_ID, json_data=json_data)
     doc.close()
 
+# Converts a URL to a PDF, generates QR codes, embeds them, processes metadata, and opens the final PDF.
 def making_pdf_qr(path):
     pdfkit.from_url(path, output_path=TEMP_PDF_PATH, configuration=CONFIG, options=OPT, verbose=False)
     num_pages = count_pdf_pages(TEMP_PDF_PATH)
     generate_qr_codes(num_pages)
     add_qr_codes_to_pdf(num_pages, TEMP_PDF_PATH, FINAL_PDF_PATH)
     os.remove(TEMP_PDF_PATH)
+    shutil.rmtree(QR_FOLDER_PATH)
     process_pdf_metadata(FINAL_PDF_PATH, path)
     webbrowser.open(FINAL_PDF_PATH)  # Open the final PDF file
 
+# Converts a existing HTMLin a local diractory to a PDF, generates QR codes, embeds them, processes metadata, and opens the final PDF.
 def process_pdf_file(file_path):
     num_pages = count_pdf_pages(file_path)
     generate_qr_codes(num_pages)
@@ -137,6 +147,7 @@ def process_pdf_file(file_path):
     process_pdf_metadata(FINAL_PDF_PATH, file_path)
     webbrowser.open(FINAL_PDF_PATH)  # Open the final PDF file
 
+# GUI Application
 class PDFGeneratorApp(QWidget):
     def __init__(self):
         super().__init__()

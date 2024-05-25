@@ -10,16 +10,16 @@
 /[Ll]ogs/
 /[Uu]ser[Ss]ettings/
 
-/PdfGenerator/__pycache__/
-/PdfGenerator/build/
-/PdfGenerator/dist/
-/PdfGenerator/access.txt
-/PdfGenerator/*.spec
-/PdfGenerator/*.zip
-/PdfGenerator/_ARMarker/*
-!/PdfGenerator/_ARMarker/Markers
-/PdfGenerator/_ARMarker/Markers/*.meta
-/PdfGenerator/_ARMarker/Markers/*.asset
+/ARchivist_document_generator/__pycache__/
+/ARchivist_document_generator/build/
+/ARchivist_document_generator/dist/
+/ARchivist_document_generator/access.txt
+/ARchivist_document_generator/*.spec
+/ARchivist_document_generator/*.zip
+/ARchivist_document_generator/_ARMarker/*
+!ARchivist_document_generatorr/_ARMarker/Markers
+/ARchivist_document_generator/_ARMarker/Markers/*.meta
+/ARchivist_document_generator/_ARMarker/Markers/*.asset
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data
