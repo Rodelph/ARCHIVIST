@@ -1,6 +1,6 @@
 # ARchivist
 
-<h2> This game was made by :  </h2>
+<h2> This project was made by :  </h2>
 <table style="width:100%" align="center">
     <tr>
         <th>First Name</th>
