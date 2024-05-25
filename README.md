@@ -1,5 +1,29 @@
 # ARchivist
 
+<h2> This game was made by :  </h2>
+<table style="width:100%" align="center">
+    <tr>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>Student ID</th>
+    </tr>
+    <tr>
+        <td>Amine</td>
+        <td>Naqi</td>
+        <td>0562497</td>
+    </tr>    
+    <tr>
+        <td>Mable</td>
+        <td>Rajan</td>
+        <td></td>
+    </tr>
+    <tr>
+        <td>Sean Victor</td>
+        <td>Scofield</td>
+        <td></td>
+    </tr>    
+</table>
+
 ## Overview
 
 This project contains the code for the ARchivist prototype built for
