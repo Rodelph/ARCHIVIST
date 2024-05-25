@@ -111,29 +111,29 @@ def process_pdf_metadata(pdf_path, url):
     
     total_pages = doc.page_count
     item_count = 0
-    hyperlink_id = create_data()
+    bin_id = create_data()
+hyperlink_id = UID
+for page_idx in range(total_pages):
+    cur_page = doc.load_page(page_idx)
+    links = cur_page.get_links()
+    hyperlinks = []
 
-    for page_idx in range(total_pages):
-        cur_page = doc.load_page(page_idx)
-        links = cur_page.get_links()
-        hyperlinks = []
+    for item in links:
+        x0, y0, x1, y1 = item['from']
+        coordinates = [round(coord, 5) for coord in [x0, y0, x1, y1]]
+        uri = item.get('uri', '')
+        hyperlink = {'id': f"{hyperlink_id}-{item_count}", 'uri': uri, 'coordinates': coordinates}
+        hyperlinks.append(hyperlink)
+        item_count += 1
 
-        for item in links:
-            x0, y0, x1, y1 = item['from']
-            coordinates = [round(coord, 5) for coord in [x0, y0, x1, y1]]
-            uri = item.get('uri', '')
-            hyperlink = {'id': f"{hyperlink_id}-{item_count}", 'uri': uri, 'coordinates': coordinates}
-            hyperlinks.append(hyperlink)
-            item_count += 1
+    json_data['pages'].append({"hyperlinks": hyperlinks})
 
-        json_data['pages'].append({"hyperlinks": hyperlinks})
-
-    update_data(bin_id=hyperlink_id, json_data=json_data)
-    doc.close()
+update_data(bin_id=hyperlink_id, json_data=json_data)
+doc.close()
 
 def making_pdf_qr(path):
-    pdfkit.from_url(path, output_path=TEMP_PDF_PATH, configuration=CONFIG, options=OPT, verbose=False)
-    num_pages = count_pdf_pages(TEMP_PDF_PATH)
+pdfkit.from_url(path, output_path=TEMP_PDF_PATH, configuration=CONFIG, options=OPT, verbose=False)
+num_pages = count_pdf_pages(TEMP_PDF_PATH)
     generate_qr_codes(num_pages)
     add_qr_codes_to_pdf(num_pages, TEMP_PDF_PATH, FINAL_PDF_PATH)
     os.remove(TEMP_PDF_PATH)
