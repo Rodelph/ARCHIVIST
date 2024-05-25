@@ -44,16 +44,9 @@ def count_pdf_pages(temp_pdf_path):
         pdf_reader = PdfReader(file)
         return len(pdf_reader.pages)
 
-def get_ar_marker_coordinates(pdf_path):
-    pdf_document = fitz.open(pdf_path)
-    image_list = pdf_document.get_page_images(0, full=True)
-    ar_marker_coordinates = pdf_document[0].get_image_rects(image_list[0][7], transform=True)[0][0]
-    pdf_document.close()
-    return ar_marker_coordinates
-
 def generate_qr_codes(num_pages):
     for p_no in range(num_pages):
-        text = f'{{"id": "{BIN_ID}", "page": {p_no + 1}}}'
+        text = f'{{"id": "{BIN_ID}", "page": {p_no}}}'
         qr = qrcode.QRCode(version=1, error_correction=qrcode.constants.ERROR_CORRECT_L, box_size=10, border=4)
         qr.add_data(text)
         qr.make(fit=True)
@@ -97,14 +90,12 @@ def add_qr_codes_to_pdf(num_pages, temp_pdf_path, final_pdf_path):
         pdf_writer.write(output_pdf)
 
 def process_pdf_metadata(pdf_path, url):
-    ar_marker_coordinates = get_ar_marker_coordinates(pdf_path)
     doc = fitz.open(pdf_path)
+    a, b = 200, 660
+    wid, hei = 120, 120
     json_data = {
         'URL': url,
-        'ar_marker_coordinates': [
-            ar_marker_coordinates.x0, ar_marker_coordinates.y0,
-            ar_marker_coordinates.x1, ar_marker_coordinates.y1
-        ],
+        'ar_marker_coordinates': [a, (792 - (b + hei)), (a + wid), (792 - b)],
         'pages': []
     }
     
