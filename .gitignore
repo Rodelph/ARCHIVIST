@@ -81,3 +81,21 @@ crashlytics-build.properties
 # Temporary auto-generated Android Assets
 /[Aa]ssets/[Ss]treamingAssets/aa.meta
 /[Aa]ssets/[Ss]treamingAssets/aa/*
+
+# More Unity stuff to ignore
+*Library*
+*Logs*
+*Temp*
+*UserSettings*
+*build*
+
+
+# More python stuff to ignore
+*vscode*
+*ipynb_checkpoints*
+*__pycache*
+*PDF/*
+
+
+# More MacOS stuff to ignore
+*DS_Store*

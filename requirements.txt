@@ -1,7 +1,0 @@
-pygithub
-pdfkit
-PyPDF2
-qrcode
-PyMuPDF
-reportlab
-PyQt5
