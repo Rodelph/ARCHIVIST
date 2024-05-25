@@ -20,6 +20,7 @@
 !ARchivist_document_generatorr/_ARMarker/Markers
 /ARchivist_document_generator/_ARMarker/Markers/*.meta
 /ARchivist_document_generator/_ARMarker/Markers/*.asset
+/__pycache__/*
 
 # MemoryCaptures can get excessive in size.
 # They also could contain extremely sensitive data

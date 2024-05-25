@@ -124,7 +124,7 @@ def process_pdf_metadata(pdf_path, url):
 
     doc.close()
 
-    with open('access.txt', 'r') as file:
+    with open('github_access_key.txt', 'r') as file:
         access_token = file.read().strip()
     github = Github(access_token)
     repo = github.get_repo('seanscofield/archivist')
