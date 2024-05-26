@@ -5,12 +5,13 @@
 This directory contains the Unity project for the ARchivist Android/IOS application. Many of the files in this project existed before we started writing any application code (for example, pre-packaged assets/scripts/etc.). The only new assets that we've created can all be found under `Assets/CustomAssets`.
 
 
-Here is a brief description of the sub-directories in `Assets/CustomAssets`:
+Here is a brief description of the resources & sub-directories in `Assets/CustomAssets`:
 - **Images** (contains the "Legend" image file that we display in AR to show what the different link colors mean)
 - **Materials** (contains different colored, semi-transparent materials that we use for our prefabs)
 - **Prefabs** (contains the prefabs corresponding to AR hyperlink overlays that are app places on top of the hyperlinks in augmented documents)
 - **Scenes** (contains the "Hyperlinks" scene)
 - **Scripts** (all of our C# scripts)
+- **Reference Image Library** (specifies which AR marker the app should look for)
 
 Furthermore, here is a brief description of *some* of the important C# scripts
 - `QRCodeDetector.cs` C# script for continually monitoring for QR codes, and publishing a notification to other listening scripts whenever it successfully scans a code)
