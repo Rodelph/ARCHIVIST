@@ -26,6 +26,9 @@
 </table>
 
 ## Overview
+<div align="center">
+    <img src="./ARchivist_document_generator//readme-img/demo.gif">
+</div>
 
 This project contains the code for the ARchivist prototype built for
 the Next Generation User Interfaces course at VUB. It was written by
